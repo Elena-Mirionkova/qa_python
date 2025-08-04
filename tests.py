@@ -24,16 +24,19 @@ class TestBooksCollector:
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
     
-    @pytest.mark.parametrize('length', [0, 1, 25, 39, 40, 41, 50])
-    def test_add_new_book_name_length(self, length):
+    @pytest.mark.parametrize('length', [1, 25, 39, 40])
+    def test_add_new_book_name_length_positive(self, length):
         name='a' * length
         collector=BooksCollector()
         collector.add_new_book(name)
-        if 0 < length < 41:
-            assert len(collector.books_genre) == 1
-        else:
-            assert len(collector.books_genre) == 0
-        
+        assert len(collector.books_genre) == 1
+       
+    @pytest.mark.parametrize('length', [0, 41, 50])
+    def test_add_new_book_name_length_negative(self, length):
+        name='a' * length
+        collector=BooksCollector()
+        collector.add_new_book(name)
+        assert len(collector.books_genre) == 0
     
     def test_set_book_genre_set_genre_horror(self):
         name = 'Гордость и предубеждение и зомби'
@@ -124,4 +127,3 @@ class TestBooksCollector:
         collector.delete_book_from_favorites('Идиот')
         books=collector.get_list_of_favorites_books()
         assert len(books) == 1 and 'Гордость и предубеждение и зомби' in books
-        
